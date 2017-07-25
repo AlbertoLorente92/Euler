@@ -6,6 +6,12 @@
 *.lo
 *.o
 *.obj
+*.sdf
+*.sln
+*.suo
+*Debug*
+*vcxproj*
+*.opensdf
 
 # Precompiled Headers
 *.gch
