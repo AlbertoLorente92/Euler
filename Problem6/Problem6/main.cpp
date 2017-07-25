@@ -1,28 +1,34 @@
 #include <iostream>
 #include <string>
+#include <math.h>
 
-bool is_divisible_by1to20(int aux){
-	for(int i = 1; i <= 20; i++){
-		if((aux%i)!=0){
-			return false;
-		}
+int square_of_the_sum(int x, int y){
+	int sum = 0;
+
+	for(int i = x; i <= y; i++){
+		sum += i;
 	}
 
-	return true;
+	return (int)pow(sum,2.0);
+}
+
+int sum_of_the_squares(int x, int y){
+	int sum = 0;
+
+	for(int i = x; i <= y; i++){
+		sum += (int)pow(i,2.0);
+	}
+
+	return sum;
 }
 
 int main(int argc, char* argv[]){
-	int x = 21;
-	bool find = false;
-	while(!find){
-		if(is_divisible_by1to20(x)){
-			find = true;
-		}else{
-			x += 1;
-		}
-	}
+	int x,y,diff;
+	x = 1;
+	y = 100;
+	diff = square_of_the_sum(x,y) - sum_of_the_squares(x,y);
 
-	std::cout << "END: " << x << std::endl;
+	std::cout << "END: " << diff << std::endl;
 
 	system("PAUSE");
 	return 0;
