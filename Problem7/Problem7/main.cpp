@@ -9,8 +9,8 @@ bool num_is_prime_aux(const int x,int state){
 		return false;
 	}else{
 		const int seq[4] = {2,4,2,2};
-		for(int i = 11; i <= x/2; i=i+seq[state%4]){
-			state++;
+		for(int i = 11; i <= x/2; i=i+seq[state]){
+			state = (state+1)%4;
 			if((x%i)==0){
 				return false;
 			}
