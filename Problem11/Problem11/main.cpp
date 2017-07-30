@@ -26,6 +26,16 @@ const int matrix[MAX_TAM][MAX_TAM] = {
 		{20,73,35,29,78,31,90,1,74,31,49,71,48,86,81,16,23,57,5,54},
 		{01,70,54,71,83,51,54,69,16,92,33,48,61,43,52,1,89,19,67,48}};
 
+void show(int a,int b,int c,int d,std::string type,long long int x){
+	std::cout	<< "type=" << type
+		<< " "
+				<< "a=" << a << " " 
+				<< "b=" << b << " " 
+				<< "c=" << c << " " 
+				<< "d=" << d << " " 
+				<< "Total="  << x << std::endl;
+}
+
 long long int search_for_max_mult(const int tam,int &a,int &b,int &c,int &d,std::string &type){
 	long long int max_mult = 0;
 	bool control;
@@ -42,6 +52,7 @@ long long int search_for_max_mult(const int tam,int &a,int &b,int &c,int &d,std:
 					c = matrix[i][j+2];
 					d = matrix[i][j+3];
 					type = "row";
+					show(a,b,c,d,type,max_mult);
 			}else{
 				control = false;
 			}
@@ -61,6 +72,7 @@ long long int search_for_max_mult(const int tam,int &a,int &b,int &c,int &d,std:
 					c = matrix[j+2][i];
 					d = matrix[j+3][i];
 					type = "colum";
+					show(a,b,c,d,type,max_mult);
 			}else{
 				control = false;
 			}
@@ -69,7 +81,7 @@ long long int search_for_max_mult(const int tam,int &a,int &b,int &c,int &d,std:
 	//end - columns
 
 	//start - diagonally UPRIGHT to DOWNLEFT
-	for (int slice = 0; slice < 2 * MAX_TAM - 1; ++slice) {
+	/*for (int slice = 0; slice < 2 * MAX_TAM - 1; ++slice) {
 		//printf("Slice %d: ", slice);
 		control = true;
 		int z = (slice < MAX_TAM) ? 0 : slice - MAX_TAM + 1;
@@ -83,34 +95,53 @@ long long int search_for_max_mult(const int tam,int &a,int &b,int &c,int &d,std:
 					c = matrix[(j+2)][slice - (j+2)];
 					d = matrix[(j+3)][slice - (j+3)];
 					type = "UPRIGHT to DOWNLEFT";
+					show(a,b,c,d,type,max_mult);
 			}else{
 				control = false;
 			}
 		}
 		//printf("\n");
 		
-	}
+	}*/
 	//end - diagonally UPRIGHT to DOWNLEFT
 
 	//start - diagonally UPLEFT to DOWNRIGHT
-	for (int slice = 2 * MAX_TAM - 1; slice >= 0; --slice){
-		control = true;
-		int z = (slice < MAX_TAM) ? 0 : slice - MAX_TAM + 1;
-		for (int j = z; j <= slice - z && control; ++j) {
-			if((slice - (j + 3))>=0 && (j + 3)<MAX_TAM
-				&& (matrix[j][slice - j]*matrix[(j+1)][slice - (j+1)]*matrix[(j+2)][slice - (j+2)]*matrix[(j+3)][slice - (j+3)])>max_mult){
-					max_mult = (matrix[j][slice - j]*matrix[(j+1)][slice - (j+1)]*matrix[(j+2)][slice - (j+2)]*matrix[(j+3)][slice - (j+3)]);
-					a = matrix[j][slice - j];
-					b = matrix[(j+1)][slice - (j+1)];
-					c = matrix[(j+2)][slice - (j+2)];
-					d = matrix[(j+3)][slice - (j+3)];
-					type = "UPLEFT to DOWNRIGHT";
+	for(int i=0; i <  16; i++){
+		for(int j=0; j < 16;j++){
+			if((i + 3)<MAX_TAM && (j + 3)<MAX_TAM
+				&& matrix[i][j]*matrix[i+1][j+1]*matrix[i+2][j+2]*matrix[i+3][j+3]>max_mult){
+				max_mult = matrix[i][j]*matrix[i+1][j+1]*matrix[i+2][j+2]*matrix[i+3][j+3];
+				a = matrix[i][j];
+				b = matrix[i+1][j+1];
+				c = matrix[i+2][j+2];
+				d = matrix[i+3][j+3];
+				type = "UPLEFT to DOWNRIGHT";
+				show(a,b,c,d,type,max_mult);
 			}else{
 				control = false;
 			}
 		}
 	}
 	//end - diagonally UPLEFT to DOWNRIGHT
+
+	//start - diagonally UPRIGHT to DOWNLEFT
+	for(int i=0; i < MAX_TAM; i++){
+		for(int j=0; j < MAX_TAM; j++){
+			if((i - 3)>=0 && (j + 3)<MAX_TAM
+				&& matrix[i][j]*matrix[i-1][j+1]*matrix[i-2][j+2]*matrix[i-3][j+3]>max_mult){
+				max_mult = matrix[i][j]*matrix[i-1][j+1]*matrix[i-2][j+2]*matrix[i-3][j+3];
+				a = matrix[i][j];
+				b = matrix[i-1][j+1];
+				c = matrix[i-2][j+2];
+				d = matrix[i-3][j+3];
+				type = "UPRIGHT to DOWNLEFT";
+				show(a,b,c,d,type,max_mult);
+			}else{
+				control = false;
+			}
+		}
+	}
+	//end - diagonally UPRIGHT to DOWNLEFT
 
 	return max_mult;
 }
@@ -129,14 +160,7 @@ int main(int argc, char* argv[]){
 	int a,b,c,d;
 	std::string type;
 	long long int x = search_for_max_mult(4,a,b,c,d,type);
-	std::cout	<< "type=" << type
-		<< " "
-				<< "a=" << a << " " 
-				<< "b=" << b << " " 
-				<< "c=" << c << " " 
-				<< "d=" << d << " " 
-				<< std::endl;
-	std::cout << "END: " << x << std::endl;
+	//show(a,b,c,d,type,x);
 	system("PAUSE");
 	return 0;
 }
